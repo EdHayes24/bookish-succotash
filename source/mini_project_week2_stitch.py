@@ -1,12 +1,26 @@
-#import mini_project_wk2_v1 as mp
+# Changing print method of dictionaries to match index on execute function
+# Plus Week 3 amendments:
+# Add a list of couriers and the ability to add update and delelt
+# List of couriers = list of strings
+# save courier info to line delimited text file
 import os
 import tabulate
 import pickle
 import pyfiglet
 from datetime import datetime
 
-# import pyfiglet module
+# import pyfiglet module for presentation ASCII art strings 
 import pyfiglet
+
+class Courier_object:
+    def __init__(self, name, orders, n_orders):
+        self.name = name
+        self.orders = orders
+        self.n_orders = n_orders
+    
+    def add_to_order(self, order_id):
+        pass
+
 
 
 def options_selector(options_list, message="\n", err_msg="\n"):
@@ -58,6 +72,42 @@ def products_list_add(products_list, item):
     return(products_list)
 
 
+def couriers_list_add(couriers_list, item):
+    # Function to add an item to update/add an item to the couriers list
+    # Args:
+    # couriers_list = list of strings, current couriers_list to be updated
+    # item = string, item to be added to list
+    num = 1
+    while item in couriers_list:
+        if num == 1:
+            item += "_" + str(num).zfill(3)
+        else:
+            item = item[:-3]
+            item += str(num).zfill(3)
+        num+=1
+    couriers_list.append(item)
+    return(couriers_list)
+
+
+def make_string_unique(s, list_s):
+    # Function to convert an input string into a unique one
+    # Performed by adding _ and max 3 padded 0's w/ iterative counter {num}
+    # At 999 iterations exits and states not found
+    # Args:
+    # s = string(), word to be made unique
+    # s_list = list of strings, list of strings to be unique from
+    num = 1
+    s = str(s)
+    s += "_" + str(num).zfill(3)
+    while (s in list_s) and (num < 999):
+        num +=1
+        s = s[:-3]
+        s += str(num).zfill(3)
+    return(s)
+
+
+
+
 def commit_changes(original, updated):
     # Function to decide whether or not to commit to changes
     # original = unedited value
@@ -75,9 +125,14 @@ def print_list_of_dicts(list_of_dicts):
     # requires tabulate: https://pypi.org/project/tabulate/
     # Prints formatted table from list of dictonary objects using tabulate package
     # Args: list_of_dicts = list of dictionaries
-    headers = list_of_dicts[0].keys()
-    rows = [dict_obj.values() for dict_obj in list_of_dicts]
-    print(tabulate.tabulate(rows, headers))
+    try:
+        headers = list_of_dicts[0].keys()
+        rows = [dict_obj.values() for dict_obj in list_of_dicts]
+        print(tabulate.tabulate(rows, headers))
+    except IndexError as ide:
+        print(f"Error: {ide}")
+        print(f"Empty List argument in print_list_of_dicts(list_of_dicts)")
+    pass
 
 
 def list_to_line_delim_txt(list_obj, filepath):
@@ -119,7 +174,154 @@ def line_delim_txt_to_list(filepath):
         return(out_list)
 
 
-def order_operations_menu(products_list, orders_list):
+def courier_operations_menu(couriers_list):
+    # Function for the courier operations Options Menu
+    # Prints welcome string and product operation options
+    # Returns: update to stored products list, file & user input
+    mutable_co = couriers_list[:]
+    cafe_header()
+    # courier Operations Constants:
+    submenu_options = ("exit()", "Print Couriers List", "Add New Courier", "Update Existing Courier", "Delete Courier")
+    carryOn = True
+    # Retrieve User Input to navigate submenu
+    usr_input = options_selector(submenu_options, " Courier Operations Menu ".center(50, '*'))
+    if usr_input == 0:
+        print("exiting to main menu")
+        # Save any changes that have been made
+        list_to_line_delim_txt(couriers_list, "./data/couriers_list.txt")
+        carryOn = False # Set recursion in submenu to false
+    elif usr_input == 1:
+        # Option 1: Print Couriers List
+        os.system("cls")
+        print(" Couriers ".center(50, '~'))
+        for i, item in enumerate(couriers_list):
+            print(f"{i} - {item}")
+    elif usr_input == 2:
+        # Option 2: Add a New Courier
+        print(" Add a New Courier ".center(50, '~'))
+        new_courier = input("Inset New Courier Name: ")
+        # Make Sure Courier name is unique
+        if new_courier in couriers_list:
+            print("Courier already exists in list\nGenerating Unique Name for courier")
+            print(f"New Courier Name: {new_courier}")
+            new_courier = make_string_unique(new_courier, couriers_list)
+        mutable_co = couriers_list_add(mutable_co, new_courier)
+        print(mutable_co)
+        couriers_list = commit_changes(couriers_list, mutable_co)
+        for i, item in enumerate(couriers_list):
+            print(f"idx:{i}, item:{item}")
+    elif usr_input == 3:
+        # Option 3: Update Existing Courier
+        idx_to_update = options_selector(couriers_list, " Update Existing Courier ".center(50, '~'))
+        new_courier = input("insert new courier name: ")
+        # Make Sure Courier name is unique
+        if new_courier in couriers_list:
+            print("Courier already exists in list\nGenerating Unique Name for courier")
+            print(f"New Courier Name: {new_courier}")
+            new_courier = make_string_unique(new_courier, couriers_list)
+        mutable_co[idx_to_update] = new_courier
+        couriers_list = commit_changes(couriers_list, mutable_co)
+    elif usr_input == 4:
+        # Option 4: Delete a Courier
+        idx_to_del = options_selector(couriers_list, " Delete Existing Courier ".center(50, '~'))
+        removed_courier = mutable_co.pop(idx_to_del)
+        couriers_list = commit_changes(couriers_list, mutable_co)
+    # Recursion if carryOn is True, present submenu options again
+    # Else exit back to previous menu  
+    if carryOn == True:
+        input("\n Press Any Key To Continue: \n    > ")
+        courier_operations_menu(couriers_list)
+    else:
+        main_options_menu()
+
+def get_non_negative_int(prompt):
+    while True:
+        try:
+            value = int(input(prompt))
+        except ValueError as ve:
+            print(f"Error: {ve}\n Please enter a positive integer value")
+            continue
+
+        if value < 0:
+            print("Sorry, your response must not be negative.")
+            continue
+        else:
+            break
+    return value
+
+
+def product_selector_add(items_list, out_dict, key_names=("Items", "Quantity")):
+    # Function to obtain user input for order choice
+    carryOn = True
+    while carryOn:
+        pick = options_selector(items_list, "Please select the desired product: ")
+        chosen_item = items_list[pick]
+        quantity = get_non_negative_int(f"Enter quantity of {items_list[pick]} desired: ")
+        prior_items = out_dict.get(key_names[0])
+        if chosen_item in prior_items:
+            # Item exists, add to quantity in corresponding index instead
+            print(f"Item {chosen_item} has already been selected")
+            idx = prior_items.match(chosen_item)
+            existing_quantity = out_dict.get(key_names[1])[idx]
+            print(f"Adding {quantity} to existing total {existing_quantity} = {quantity+existing_quantity}")
+            out_dict[key_names[1]][idx] = quantity + existing_quantity
+        else:
+            out_dict[key_names[0]].append(chosen_item)
+            out_dict[key_names[1]].append(quantity)
+        usr_continue = input("Add another item? (y/n): ")
+        if usr_continue.lower() != "y":
+            carryOn = False
+    return(out_dict)
+
+
+
+def product_selector_remove(out_dict, key_names=("Items", "Quantity")):
+    # Function to obtain user input for order item removal
+    carryOn = True
+    while carryOn:
+        pick = options_selector(out_dict.get(key_names[0]), "Please select the product to remove: ")
+        for key in key_names:
+            del out_dict[key][pick]
+        usr_continue = input("Remove another item? (y/n): ")
+        if usr_continue.lower() != "y":
+            carryOn = False
+    return(out_dict)
+
+
+def product_selector_amend(out_dict, key_names=("Items", "Quantity")):
+    # Function to obtain user input for order item quantity amendment choice
+    carryOn = True
+    while carryOn:
+        pick = options_selector(out_dict.get(key_names[0]), "Please select the product to amend: ")
+        print("Quantity: {out_dict[key_names[1]][pick]}")
+        quantity = get_non_negative_int(f"Enter New quantity of {out_dict.get(key_names[0])[pick]} desired: ")
+        out_dict[key_names[1]][pick] = quantity
+        usr_continue = input("Amend another item? (y/n): ")
+        if usr_continue.lower() != "y":
+            carryOn = False
+    return(out_dict)
+
+
+def product_selector(option, items_list , dict_out, key_names = ("Items", "Quantity")):
+    if option == 0:
+        # Cancel, abort operation
+        print("Abort Product Select Operation Menu")
+    elif option == 1:
+        # Add to items to order
+        dict_out = product_selector_add(items_list, dict_out, key_names)
+    elif option == 2:
+        # Remove items from order
+        dict_out = product_selector_remove(dict_out, key_names)
+    elif option == 3:
+        # Amend Count of an item
+        dict_out = product_selector_amend(dict_out, key_names)
+    else:
+        # Out of range, abort
+        print("Index not in range, aborting product_selector operation")
+    return(dict_out)
+    
+
+def order_operations_menu(products_list, orders_list, couriers_list):
     # Function for the order operations Options Menu
     # Prints welcome string and product operation options
     # Returns: update to stored products list, file & user input
@@ -127,8 +329,8 @@ def order_operations_menu(products_list, orders_list):
     # Order Operations Constants:
     status_options = ("Preparing", "Awaiting-Delivery", "Out-for-Delivery", "Delivered")
     order_keys_usr = ("Name", "Address", "Tel", "Items")
-    order_keys_sys = ("Status", "Time")
-    order_keys_all = ("Name", "Address", "Tel", "Status", "Time", "Items")
+    order_keys_sys = ("Order_ID", "Status", "Time", "Courier")
+    order_keys_all = ("Order_ID", "Name", "Address", "Tel", "Status", "Time", "Items", "Courier")
     submenu_options = ("exit()", "Print Orders Dictionary", "Create New Order", "Update Order Status", "Update Existing Order", "Delete Order")
     carryOn = True
     # Retrieve User Input to navigate submenu
@@ -150,9 +352,11 @@ def order_operations_menu(products_list, orders_list):
         print("Create New Order:")
         # Initialise Order Dict and recieve User info
         dict_obj = {}
+        customer_selection = {"Items":[], "Quantity": []}
         for key in order_keys_usr:
             if key == "Items":
-                dict_obj[key] = products_list
+                customer_selection = product_selector(1, products_list, customer_selection, ("Items", "Quantity"))
+                dict_obj[key] = customer_selection
             else:
                 dict_obj[key] = input(f"Please Insert Order {key}: ")
         order_time = str(datetime.today().strftime('%Y-%m-%d'))
@@ -161,6 +365,9 @@ def order_operations_menu(products_list, orders_list):
         dict_obj["Status"] = status_options[0]
         order_uniq_id = "_".join([order_time, str(1+len(orders_list)).zfill(3)]) + "_" + "_".join(dict_obj["Name"].split())
         print(order_uniq_id)
+        dict_obj["Order_ID"] = order_uniq_id
+        courier_pick = options_selector(couriers_list, f"Select a Courier for the order: {order_uniq_id}")
+        dict_obj["Courier"] = couriers_list[courier_pick]
         # Add dictionary object to orders_dict dictionary
         orders_list.append(dict_obj)
     elif usr_input == 3:
@@ -182,7 +389,10 @@ def order_operations_menu(products_list, orders_list):
             info_change = options_selector(order_keys_usr, "Order Information Categories: ".center(50, " "))
             info_change_key = order_keys_usr[info_change]
             if info_change_key == "Items":
-                print("DEV NOTE: WE NEED ADDITIOANL Feature to deal with this")
+                # Functions to add, remove, edit for customer_selection
+                items_op = options_selector(("Cancel", "Add", "Remove", "Amend"), "Select Items Order Amendment operation: ")
+                # Opens product selection menu to add, remove, edit based on user inputs
+                order["Items"] = product_selector(items_op, products_list,order["Items"], ("Items", "Quantity"))
             # Request User Input for new value
             print(f"Current value of {info_change_key} is: {order[info_change_key]}")
             new_variable = input(f"Please insert new value for {info_change_key}: ")
@@ -199,15 +409,15 @@ def order_operations_menu(products_list, orders_list):
         order_no = options_selector(orders_list, "Delete An Order: ")
         order = orders_list[order_no]
         print("Order to be Deleted: ")
-        print_list_of_dicts(orders_list[order_no])
-        usr_confirm = input("Is this correct?")
-        if usr_confirm == "y":
+        print_list_of_dicts([orders_list[order_no]])
+        usr_confirm = input("Is this correct? (y/n): ")
+        if usr_confirm.lower() == "y":
             orders_list.remove(orders_list[order_no])
     # Recursion if carryOn is True, present submenu options again
     # Else exit back to previous menu
     if carryOn == True:
         input("\n Press Any Key To Continue: \n    > ")
-        order_operations_menu(products_list, orders_list)
+        order_operations_menu(products_list, orders_list, couriers_list)
     else:
         main_options_menu()
 
@@ -268,7 +478,7 @@ def main_options_menu():
     # Returns: function call to corresponding sub-menu
     # os.system('cls')
     cafe_header()
-    menu_options = ("exit()","Open Products List operations menu", "Open Orders Operations menu")
+    menu_options = ("exit()","Open Products List operations menu", "Open Orders Operations menu", "Open Courier Operations Menu")
     usr_input = options_selector(menu_options, " Options Menu ".center(50, '~'))
     print(" Options Menu ".center(50, '~'))
     if usr_input == 0:
@@ -286,7 +496,14 @@ def main_options_menu():
         with open(orders_list_file, 'rb') as handle:
             orders_list = pickle.load(handle)
         products_list = line_delim_txt_to_list("./data/products_list_v4.txt")
-        order_operations_menu(products_list, orders_list)
+        courier_list_file = "./data/couriers_list.txt"
+        couriers_list = line_delim_txt_to_list(courier_list_file)
+        order_operations_menu(products_list, orders_list, couriers_list)
+    elif usr_input == 3:
+        # Option 3: Couriers Operations Menu
+        courier_list_file = "./data/couriers_list.txt"
+        couriers_list = line_delim_txt_to_list(courier_list_file)
+        courier_operations_menu(couriers_list)
     else:
         # Input Invalid / Out of range
         os.system("cls")
@@ -296,8 +513,4 @@ def main_options_menu():
 
 if __name__ == "__main__":
     main_options_menu()
-    orders_list_file = "./data/orders_list.pkl"
-    with open(orders_list_file, 'rb') as handle:
-        orders_list = pickle.load(handle)
-    for order in orders_list:
-        print(order)
+
