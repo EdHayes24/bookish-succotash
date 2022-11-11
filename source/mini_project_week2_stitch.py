@@ -119,7 +119,6 @@ def make_string_unique(s, list_s):
     return(s)
 
 
-
 def commit_changes(original, updated):
     # Function to decide whether or not to commit to changes
     # original = unedited value
@@ -186,6 +185,86 @@ def line_delim_txt_to_list(filepath):
         return(out_list)
 
 
+def product_selector_add(items_list, out_dict, key_names=("Items", "Quantity")):
+    # Function to obtain user input for order choice
+    carryOn = True
+    while carryOn:
+        pick = options_selector(items_list, "Please select the desired product: ")
+        chosen_item = items_list[pick]
+        quantity = get_non_negative_int(f"Enter quantity of {items_list[pick]} desired: ")
+        prior_items = out_dict.get(key_names[0])
+        if chosen_item in prior_items:
+            # Item exists, add to quantity in corresponding index instead
+            print(f"Item {chosen_item} has already been selected")
+            idx = prior_items.index(chosen_item)
+            existing_quantity = out_dict.get(key_names[1])[idx]
+            print(f"Adding {quantity} to existing total {existing_quantity} = {quantity+existing_quantity}")
+            out_dict[key_names[1]][idx] = quantity + existing_quantity
+        else:
+            out_dict[key_names[0]].append(chosen_item)
+            out_dict[key_names[1]].append(quantity)
+        usr_continue = input("Add another item? (y/n): ")
+        if usr_continue.lower() != "y":
+            carryOn = False
+    return(out_dict)
+
+
+def product_selector_remove(out_dict, key_names=("Items", "Quantity")):
+    # Function to obtain user input for order item removal
+    carryOn = True
+    while carryOn:
+        if not out_dict[key_names[0]]:
+            # Empty Dictionaries evaluate to False
+            # Dictionary empty, abort removal
+            print(f"Nothing to remove from {out_dict}")
+            print("Aborting removal operation")
+            carryOn = False
+        else:
+            pick = options_selector(out_dict.get(key_names[0]), "Please select the product to remove: ")
+            print(out_dict)
+            for key in key_names:
+                del out_dict[key][pick]
+            usr_continue = input("Remove another item? (y/n): ")
+            if usr_continue.lower() != "y":
+                carryOn = False
+    return(out_dict)
+
+
+def product_selector_amend(out_dict, key_names=("Items", "Quantity")):
+    # Function to obtain user input for order item quantity amendment choice
+    carryOn = True
+    while carryOn:
+        pick = options_selector(out_dict.get(key_names[0]), "Please select the product to amend: ")
+        print(f"Quantity: {out_dict[key_names[1]][pick]}")
+        quantity = get_non_negative_int(f"Enter New quantity of {out_dict.get(key_names[0])[pick]} desired: ")
+        out_dict[key_names[1]][pick] = quantity
+        usr_continue = input("Amend another item? (y/n): ")
+        if usr_continue.lower() != "y":
+            carryOn = False
+    return(out_dict)
+
+
+def product_selector(option, items_list , dict_out, key_names = ("Items", "Quantity")):
+    if option == 0:
+        # Cancel, abort operation
+        print("Abort Product Select Operation Menu")
+    elif option == 1:
+        # Add to items to order
+        dict_out = product_selector_add(items_list, dict_out, key_names)
+    elif option == 2:
+        # Remove items from order
+        dict_out = product_selector_remove(dict_out, key_names)
+    elif option == 3:
+        # Amend Count of an item
+        dict_out = product_selector_amend(dict_out, key_names)
+    else:
+        # Out of range, abort
+        print("Index not in range, aborting product_selector operation")
+    return(dict_out)
+
+
+
+
 def courier_operations_menu(couriers_list):
     # Function for the courier operations Options Menu
     # Prints welcome string and product operation options
@@ -247,74 +326,6 @@ def courier_operations_menu(couriers_list):
         main_options_menu()
 
 
-def product_selector_add(items_list, out_dict, key_names=("Items", "Quantity")):
-    # Function to obtain user input for order choice
-    carryOn = True
-    while carryOn:
-        pick = options_selector(items_list, "Please select the desired product: ")
-        chosen_item = items_list[pick]
-        quantity = get_non_negative_int(f"Enter quantity of {items_list[pick]} desired: ")
-        prior_items = out_dict.get(key_names[0])
-        if chosen_item in prior_items:
-            # Item exists, add to quantity in corresponding index instead
-            print(f"Item {chosen_item} has already been selected")
-            idx = prior_items.index(chosen_item)
-            existing_quantity = out_dict.get(key_names[1])[idx]
-            print(f"Adding {quantity} to existing total {existing_quantity} = {quantity+existing_quantity}")
-            out_dict[key_names[1]][idx] = quantity + existing_quantity
-        else:
-            out_dict[key_names[0]].append(chosen_item)
-            out_dict[key_names[1]].append(quantity)
-        usr_continue = input("Add another item? (y/n): ")
-        if usr_continue.lower() != "y":
-            carryOn = False
-    return(out_dict)
-
-
-def product_selector_remove(out_dict, key_names=("Items", "Quantity")):
-    # Function to obtain user input for order item removal
-    carryOn = True
-    while carryOn:
-        pick = options_selector(out_dict.get(key_names[0]), "Please select the product to remove: ")
-        for key in key_names:
-            del out_dict[key][pick]
-        usr_continue = input("Remove another item? (y/n): ")
-        if usr_continue.lower() != "y":
-            carryOn = False
-    return(out_dict)
-
-
-def product_selector_amend(out_dict, key_names=("Items", "Quantity")):
-    # Function to obtain user input for order item quantity amendment choice
-    carryOn = True
-    while carryOn:
-        pick = options_selector(out_dict.get(key_names[0]), "Please select the product to amend: ")
-        print("Quantity: {out_dict[key_names[1]][pick]}")
-        quantity = get_non_negative_int(f"Enter New quantity of {out_dict.get(key_names[0])[pick]} desired: ")
-        out_dict[key_names[1]][pick] = quantity
-        usr_continue = input("Amend another item? (y/n): ")
-        if usr_continue.lower() != "y":
-            carryOn = False
-    return(out_dict)
-
-
-def product_selector(option, items_list , dict_out, key_names = ("Items", "Quantity")):
-    if option == 0:
-        # Cancel, abort operation
-        print("Abort Product Select Operation Menu")
-    elif option == 1:
-        # Add to items to order
-        dict_out = product_selector_add(items_list, dict_out, key_names)
-    elif option == 2:
-        # Remove items from order
-        dict_out = product_selector_remove(dict_out, key_names)
-    elif option == 3:
-        # Amend Count of an item
-        dict_out = product_selector_amend(dict_out, key_names)
-    else:
-        # Out of range, abort
-        print("Index not in range, aborting product_selector operation")
-    return(dict_out)
 
 
 def order_operations_menu(products_list, orders_list, couriers_list):
