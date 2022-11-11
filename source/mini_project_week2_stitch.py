@@ -1,8 +1,10 @@
-# Changing print method of dictionaries to match index on execute function
-# Plus Week 3 amendments:
-# Add a list of couriers and the ability to add update and delelt
-# List of couriers = list of strings
-# save courier info to line delimited text file
+# Week 4 Begins:
+# Change couriers, products and orders to all be dictionaries
+# Save and load objects from/to line delimited csv files
+# This will cause many changes in the way the code works
+# Products = smallest object so let's start there. Products_list = list of dict
+# product = {"Name": <str>, "Price": <float>}
+
 import os
 import tabulate
 import pickle
@@ -12,17 +14,7 @@ from datetime import datetime
 # import pyfiglet module for presentation ASCII art strings 
 import pyfiglet
 
-class Courier_object:
-    def __init__(self, name, orders, order_statuses, n_orders):
-        self.name = name
-        self.orders = orders
-        self.order_statuses = order_statuses
-        self.n_orders = n_orders
-    
-    def add_to_order(self, order_id):
-        pass
-
-
+# # # Error Catching Helper Functions:
 def get_non_negative_int(prompt):
     while True:
         try:
@@ -38,7 +30,6 @@ def get_non_negative_int(prompt):
             break
     return value
 
-
 def get_min_length_string(prompt, length_min=1, length_max = 255):
     while True:
         s = input(prompt)
@@ -52,73 +43,7 @@ def get_min_length_string(prompt, length_min=1, length_max = 255):
             break
     return s
 
-
-def options_selector(options_list, message="\n", err_msg="\n"):
-    # Function to ask user to choose an option from the printed list
-    # Args:
-    # options = list or tuple, list of options to choose from
-    # message = string, printed sub-menu header
-    # err_msg = string, informs user of correct input format based on prior error
-    print(message)
-    print(err_msg)
-    for i, option in enumerate(options_list):
-        print(f"{i} = {option}")
-    try:
-        choice = int(input("Please Enter the ID of the desired Option: "))
-        print(f"You have selected: {options_list[choice]}")
-    except IndexError as ide:
-        print(f"Error {ide} ")
-        err_msg = f"*** Please enter an integer value within {range(len(options_list))}"
-        choice = options_selector(options_list, message, err_msg)
-        return(choice)
-    except Exception as e:
-        print(f"Error {e} ")
-        err_msg = "*** Please enter an integer corresponding to the desired options:"
-        choice = options_selector(options_list, message, err_msg)
-        return(choice)
-    else:
-        return(choice)
-
-
-def cafe_header():
-    # Function to print presentation string
-    # at top of menu calls
-    os.system('cls||clear')
-    print(pyfiglet.figlet_format("Dave's Cafe", font = "fuzzy" ))
-    print(" Welcome ".center(50, '~'))
-    print(" Dave's Cafe ".center(50, '~'))
-
-
-def products_list_add(products_list, item):
-    # Function to add an item to update/add an item to the products list
-    # Args:
-    # products_list = list of strings, current products_list to be updated
-    # item = string, item to be added to product list
-    if item in products_list:
-        print(f"Item {item} is already in the products_list product list")
-        print("Aborting products_list_add() operation")
-    else:
-        products_list.append(item)
-    return(products_list)
-
-
-def make_string_unique(s, list_s):
-    # Function to convert an input string into a unique one
-    # Performed by adding _ and max 3 padded 0's w/ iterative counter {num}
-    # At 999 iterations exits and states not found
-    # Args:
-    # s = string(), word to be made unique
-    # s_list = list of strings, list of strings to be unique from
-    num = 1
-    s = str(s)
-    s += "_" + str(num).zfill(3)
-    while (s in list_s) and (num < 999):
-        num +=1
-        s = s[:-3]
-        s += str(num).zfill(3)
-    return(s)
-
-
+# # # File Handler Helper Functions:
 def commit_changes(original, updated):
     # Function to decide whether or not to commit to changes
     # original = unedited value
@@ -130,21 +55,6 @@ def commit_changes(original, updated):
         return(updated)
     else:
         return(original)
-
-
-def print_list_of_dicts(list_of_dicts):
-    # requires tabulate: https://pypi.org/project/tabulate/
-    # Prints formatted table from list of dictonary objects using tabulate package
-    # Args: list_of_dicts = list of dictionaries
-    try:
-        headers = list_of_dicts[0].keys()
-        rows = [dict_obj.values() for dict_obj in list_of_dicts]
-        print(tabulate.tabulate(rows, headers))
-    except IndexError as ide:
-        print(f"Error: {ide}")
-        print(f"Empty List argument in print_list_of_dicts(list_of_dicts)")
-    pass
-
 
 def list_to_line_delim_txt(list_obj, filepath):
     # Function to save a list of strings to a line delimited text file
@@ -184,6 +94,86 @@ def line_delim_txt_to_list(filepath):
     else:
         return(out_list)
 
+# # # Decoration/Print Helper Functions:
+def cafe_header():
+    # Function to print presentation string
+    # at top of menu calls
+    os.system('cls||clear')
+    print(pyfiglet.figlet_format("Dave's Cafe", font = "fuzzy" ))
+    print(" Welcome ".center(50, '~'))
+    print(" Dave's Cafe ".center(50, '~'))
+
+def print_list_of_dicts(list_of_dicts):
+    # requires tabulate: https://pypi.org/project/tabulate/
+    # Prints formatted table from list of dictonary objects using tabulate package
+    # Args: list_of_dicts = list of dictionaries
+    try:
+        headers = list_of_dicts[0].keys()
+        rows = [dict_obj.values() for dict_obj in list_of_dicts]
+        print(tabulate.tabulate(rows, headers))
+    except IndexError as ide:
+        print(f"Error: {ide}")
+        print(f"Empty List argument in print_list_of_dicts(list_of_dicts)")
+    pass
+
+# # # User Input Helper Functions:
+def options_selector(options_list, message="\n", err_msg="\n"):
+    # Function to ask user to choose an option from the printed list
+    # Args:
+    # options = list or tuple, list of options to choose from
+    # message = string, printed sub-menu header
+    # err_msg = string, informs user of correct input format based on prior error
+    print(message)
+    print(err_msg)
+    for i, option in enumerate(options_list):
+        print(f"{i} = {option}")
+    try:
+        choice = int(input("Please Enter the ID of the desired Option: "))
+        print(f"You have selected: {options_list[choice]}")
+    except IndexError as ide:
+        print(f"Error {ide} ")
+        err_msg = f"*** Please enter an integer value within {range(len(options_list))}"
+        choice = options_selector(options_list, message, err_msg)
+        return(choice)
+    except Exception as e:
+        print(f"Error {e} ")
+        err_msg = "*** Please enter an integer corresponding to the desired options:"
+        choice = options_selector(options_list, message, err_msg)
+        return(choice)
+    else:
+        return(choice)
+
+
+# # # Unique String Helper Functions:
+
+def make_string_unique(s, list_s):
+    # Function to convert an input string into a unique one
+    # Performed by adding _ and max 3 padded 0's w/ iterative counter {num}
+    # At 999 iterations exits and states not found
+    # Args:
+    # s = string(), word to be made unique
+    # s_list = list of strings, list of strings to be unique from
+    num = 1
+    s = str(s)
+    s += "_" + str(num).zfill(3)
+    while (s in list_s) and (num < 999):
+        num +=1
+        s = s[:-3]
+        s += str(num).zfill(3)
+    return(s)
+# # # List operations Helper Functions:
+def products_list_add(products_list, item):
+    # Function to add an item to update/add an item to the products list
+    # Args:
+    # products_list = list of strings, current products_list to be updated
+    # item = string, item to be added to product list
+    if item in products_list:
+        print(f"Item {item} is already in the products_list product list")
+        print("Aborting products_list_add() operation")
+    else:
+        products_list.append(item)
+    return(products_list)
+# # # Product Selector Functions:
 
 def product_selector_add(items_list, out_dict, key_names=("Items", "Quantity")):
     # Function to obtain user input for order choice
@@ -262,9 +252,7 @@ def product_selector(option, items_list , dict_out, key_names = ("Items", "Quant
         print("Index not in range, aborting product_selector operation")
     return(dict_out)
 
-
-
-
+# # # Menu/Sub-menu Helper Functions:
 def courier_operations_menu(couriers_list):
     # Function for the courier operations Options Menu
     # Prints welcome string and product operation options
@@ -324,8 +312,6 @@ def courier_operations_menu(couriers_list):
         courier_operations_menu(couriers_list)
     else:
         main_options_menu()
-
-
 
 
 def order_operations_menu(products_list, orders_list, couriers_list):
