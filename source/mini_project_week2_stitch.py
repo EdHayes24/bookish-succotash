@@ -6,140 +6,14 @@
 # product = {"Name": <str>, "Price": <float>}
 
 import os
-import tabulate
 import pickle
 import pyfiglet
 from datetime import datetime
-
-# import pyfiglet module for presentation ASCII art strings 
-import pyfiglet
-
-# # # Error Catching Helper Functions:
-def get_non_negative_int(prompt):
-    while True:
-        try:
-            value = int(input(prompt))
-        except ValueError as ve:
-            print(f"Error: {ve}\n Please enter a positive integer value")
-            continue
-
-        if value < 0:
-            print("Sorry, your response must not be negative.")
-            continue
-        else:
-            break
-    return value
-
-def get_min_length_string(prompt, length_min=1, length_max = 255):
-    while True:
-        s = input(prompt)
-        if len(s) < length_min:
-            print(f"***Please enter a String with length greater than {length_min} :")
-            continue
-        elif len(s) > length_max:
-            print(f"***Please enter a String with length in range: {length_min} < s < {length_max} :")
-            continue
-        else:
-            break
-    return s
-
-# # # File Handler Helper Functions:
-def commit_changes(original, updated):
-    # Function to decide whether or not to commit to changes
-    # original = unedited value
-    # updated = altered value
-    # choice = Boolean from input , True if want to keep changes
-    usr_input = input("Would you like to keep these changes? (y/n): ")
-    choice = usr_input.lower()[0] == "y"
-    if choice:
-        return(updated)
-    else:
-        return(original)
-
-def list_to_line_delim_txt(list_obj, filepath):
-    # Function to save a list of strings to a line delimited text file
-    # Args: 
-    # list_obj = list to convert to string and save
-    # filepath = string, with path to text file accesible from os.getcwd()
-    try:
-        with open(filepath, 'w+') as f:
-            list_obj = [str(item) for item in list_obj]
-            f.write('\n'.join(list_obj))
-    except FileNotFoundError as fnfe:
-        print(f"Error in: list_to_line_delim_txt({filepath})")
-        print(f"Error: {fnfe}")
-    except Exception as e:
-        print(f"Error in: list_to_line_delim_txt({filepath})")
-        print(f"Error: {e}")
-
-
-def line_delim_txt_to_list(filepath):
-    # Function to unpack a line delimited text file to a list of strings
-    # Args: filepath = string with path to text file accesible from os.getcwd()
-    # Returns: list of strings
-    try:
-        with open(filepath, 'r') as f:
-            out_list = []
-            for line in f.readlines():
-                out_list.append(line.strip('\n'))
-    except FileNotFoundError as fnfe:
-        print(f"Error in: line_delim_txt_to_list({filepath})")
-        print(f"Error Type: {fnfe}")
-        print("Returning None Object")       
-    except Exception as e:
-        print(f"Error in: line_delim_txt_to_list({filepath})")
-        print(f"Error Type: {e}")
-        print("Returning None Object")
-        return(None)
-    else:
-        return(out_list)
-
-
-def save_list_of_dicts_to_csv(list_of_dicts, filepath):
-    # Function to save a list of Dictionaries to a csv
-    # Requires all dictionaries in list to have identical keys and orders
-    # Args:
-    # list_of_dicts = list of dictionaries, all keys must be the same
-    # filepath = str, full name of file.csv to be saved
-    keys = list_of_dicts[0].keys()
-    with open(filepath, 'w+', newline='') as f:
-        dict_writer = csv.DictWriter(f, keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(list_of_dicts)
-
-
-def read_list_of_dicts_from_csv(filename):
-    # Function to read a list of Dictionaries from a csv
-    # Assumed all dictionaries in list to have identical keys and orders
-    # Args:
-    # filename = string, full path to csv file
-    with open(filename, 'r') as f:
-        reader = csv.DictReader(f)
-        list_of_dicts = [dict for dict in reader]
-        return(list_of_dicts)
-
-
-# # # Decoration/Print Helper Functions:
-def cafe_header():
-    # Function to print presentation string
-    # at top of menu calls
-    os.system('cls||clear')
-    print(pyfiglet.figlet_format("Dave's Cafe", font = "fuzzy" ))
-    print(" Welcome ".center(50, '~'))
-    print(" Dave's Cafe ".center(50, '~'))
-
-def print_list_of_dicts(list_of_dicts):
-    # requires tabulate: https://pypi.org/project/tabulate/
-    # Prints formatted table from list of dictonary objects using tabulate package
-    # Args: list_of_dicts = list of dictionaries
-    try:
-        headers = list_of_dicts[0].keys()
-        rows = [dict_obj.values() for dict_obj in list_of_dicts]
-        print(tabulate.tabulate(rows, headers))
-    except IndexError as ide:
-        print(f"Error: {ide}")
-        print(f"Empty List argument in print_list_of_dicts(list_of_dicts)")
-    pass
+# Load Local Function Files:
+from fileHandler_helper_functions import *
+from decoration_helper_functions import *
+from err_catching_helper_functions import *
+from unique_str_helper_functions import *
 
 # # # User Input Helper Functions:
 def options_selector(options_list, message="\n", err_msg="\n"):
@@ -168,24 +42,6 @@ def options_selector(options_list, message="\n", err_msg="\n"):
     else:
         return(choice)
 
-
-# # # Unique String Helper Functions:
-
-def make_string_unique(s, list_s):
-    # Function to convert an input string into a unique one
-    # Performed by adding _ and max 3 padded 0's w/ iterative counter {num}
-    # At 999 iterations exits and states not found
-    # Args:
-    # s = string(), word to be made unique
-    # s_list = list of strings, list of strings to be unique from
-    num = 1
-    s = str(s)
-    s += "_" + str(num).zfill(3)
-    while (s in list_s) and (num < 999):
-        num +=1
-        s = s[:-3]
-        s += str(num).zfill(3)
-    return(s)
 # # # List operations Helper Functions:
 def products_list_add(products_list, item):
     # Function to add an item to update/add an item to the products list
