@@ -94,6 +94,31 @@ def line_delim_txt_to_list(filepath):
     else:
         return(out_list)
 
+
+def save_list_of_dicts_to_csv(list_of_dicts, filepath):
+    # Function to save a list of Dictionaries to a csv
+    # Requires all dictionaries in list to have identical keys and orders
+    # Args:
+    # list_of_dicts = list of dictionaries, all keys must be the same
+    # filepath = str, full name of file.csv to be saved
+    keys = list_of_dicts[0].keys()
+    with open(filepath, 'w+', newline='') as f:
+        dict_writer = csv.DictWriter(f, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(list_of_dicts)
+
+
+def read_list_of_dicts_from_csv(filename):
+    # Function to read a list of Dictionaries from a csv
+    # Assumed all dictionaries in list to have identical keys and orders
+    # Args:
+    # filename = string, full path to csv file
+    with open(filename, 'r') as f:
+        reader = csv.DictReader(f)
+        list_of_dicts = [dict for dict in reader]
+        return(list_of_dicts)
+
+
 # # # Decoration/Print Helper Functions:
 def cafe_header():
     # Function to print presentation string
