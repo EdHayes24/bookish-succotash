@@ -1,7 +1,1 @@
-Definitely contains no anthrax
-Coca-cola
-Banana
-Chicken
-Spaghetti and Meatballs
-lollipops
-not anthrax
+Anthrax
