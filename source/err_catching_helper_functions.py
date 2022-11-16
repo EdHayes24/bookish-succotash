@@ -2,7 +2,10 @@
 def get_non_negative_int(prompt):
     while True:
         try:
-            value = int(input(prompt))
+            value = input(prompt)
+            if "." in value:
+                raise ValueError("Error: . character detected, Floats not permitted. Please enter an integer value")
+            value = int(value)
         except ValueError as ve:
             print(f"Error: {ve}\n Please enter a positive integer value")
             continue
@@ -27,3 +30,19 @@ def get_min_length_string(prompt, length_min=1, length_max = 255):
             break
     return s
 
+
+# Input Error Catching Functions
+def get_non_neg_float(prompt, dp=None):
+    while True:
+        try:
+            value = float(input(prompt))
+        except ValueError as ve:
+            print(f"Error: {ve}\n Please enter a positive float value")
+            continue
+
+        if value < 0:
+            print("Sorry, your response must not be negative.")
+            continue
+        else:
+            break
+    return value

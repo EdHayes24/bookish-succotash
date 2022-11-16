@@ -1,0 +1,18 @@
+TTD Mini Project
+# Update modified Products_operations menu to the main script
+# Consider a generic function for updating list of dictionaries and data type expected in tuples?
+# Investigate the effect of products_list being a list of dictionaries on the other functions
+# 
+
+
+Actions:
+# Added a literal shallow copy of a product dictionary using <dict_obj>.copy()
+# ^^ enables use of commit_changes(original_object, new_object)
+
+
+TTD NEW:
+
+Add check if unique in list functionality to make_string_unique(obj, list_of_obj) function
+instead of doing the check before calling?
+Different function: search for key in list of dicts?
+Fucntion to add to a specific data type key in a dictionary?

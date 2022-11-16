@@ -1,12 +1,15 @@
 # FileHandler Operations Functions
 import csv
+from err_catching_helper_functions import get_min_length_string
 # # # File Handler Helper Functions:
 def commit_changes(original, updated):
     # Function to decide whether or not to commit to changes
     # original = unedited value
     # updated = altered value
     # choice = Boolean from input , True if want to keep changes
-    usr_input = input("Would you like to keep these changes? (y/n): ")
+    prompt = "Would you like to keep these changes? (y/n): "
+    usr_input = get_min_length_string(prompt)
+    # usr_input = input("Would you like to keep these changes? (y/n): ")
     choice = usr_input.lower()[0] == "y"
     if choice:
         return(updated)
