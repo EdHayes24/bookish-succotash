@@ -12,7 +12,7 @@ Actions:
 16/11/22 - Print orders list sorted by courier &/or by order_status
 16/11/22 - Corrected options_selector error when input = -1 (negative list index printing not caught before Error Message)
 16/11/22 - Added Conversion of String Representation of List to List upon Loading of couriers_list["Orders"] from CSV using DictReader
-16/11/22 -  
+17/11/22 - Added Detailed README.md file to the project
 TTD NEW:
 15/11/22: INCOMPLETE
 - Function to add to a specific data type key in a dictionary?
@@ -26,4 +26,8 @@ TTD NEW:
 - Add Unit tests for unique_str_helper_functions
 - Remove Shallow/Deep Copy operations which clutter code 
 - Fix messy order_by for printing orders_list. Can we do similar for the Products and Couriers Lists?
-- Add a Readmne File
+- Add a Readme File using md editor and push to repo
+
+17/11/22: INCOMPLETE
+- Code Commentary Cleanups
+- wk5: save/read to/from database table instead of CSV for Products and Couriers List

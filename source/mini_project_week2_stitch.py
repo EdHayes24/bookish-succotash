@@ -1,9 +1,13 @@
-# Week 4 Begins:
-# Change couriers, products and orders to all be dictionaries
-# Save and load objects from/to line delimited csv files
-# This will cause many changes in the way the code works
-# Products = smallest object so let's start there. Products_list = list of dict
-# product = {"Name": <str>, "Price": <float>}
+#!/usr/bin/env python
+
+''' 
+    Bookish-Succotash - mini_project_week2_stitch.py
+    A Cafe Order Menu System for managing products, couriers and orders in a CLI interface using Python.
+    Main File to Run
+'''
+__author__ = "Edward Hayes"
+__email__ = "edwardhayes@sky.com"
+__status__ = "Development"
 
 import os
 import pickle

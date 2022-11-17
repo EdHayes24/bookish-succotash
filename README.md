@@ -34,6 +34,7 @@ Each menu function is supported by an array of helper functions as tabulated bel
 
 ## Additional Features
 In addition to the bonus features, additional features including:
+- Permits Customer to add items and their quantities to an Order
 - Sort printed Orders by any attribute
 - Orders Contain Time of order attribute and Unique Identifier Strings for eventual database storage
 - Product, Courier and Order attribute fields checked for duplicate naming on addition/updating
