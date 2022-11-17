@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 ''' 
     Bookish-Succotash - mini_project_week2_stitch.py
     A Cafe Order Menu System for managing products, couriers and orders in a CLI interface using Python.
