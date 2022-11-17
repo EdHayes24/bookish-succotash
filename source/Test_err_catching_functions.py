@@ -20,7 +20,6 @@ def test_get_min_length_string_zero_len_strings(monkeypatch: MonkeyPatch):
 def test_get_non_neg_int(monkeypatch: MonkeyPatch):
     # Assemble
     inputs = ["-2.23", "-1", "Hello World", "42.36", "42"]
-    #inputs = [42]
     monkeypatch.setattr("builtins.input", lambda _: inputs.pop(0))
     prompt = "Enter an integer"
     # Act
@@ -31,7 +30,6 @@ def test_get_non_neg_int(monkeypatch: MonkeyPatch):
 def test_get_non_neg_float(monkeypatch: MonkeyPatch):
     # Assemble
     inputs = ["-2.23", "-1", "Hello World", "42.36"]
-    #inputs = [42]
     monkeypatch.setattr("builtins.input", lambda _: inputs.pop(0))
     prompt = "Enter an float"
     # Act

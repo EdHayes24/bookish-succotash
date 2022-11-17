@@ -1,0 +1,5 @@
+.venv/
+.coverage
+lod_v1.csv
+lod_v2.csv
+source/__pycache__/

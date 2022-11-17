@@ -8,6 +8,7 @@
 import os
 import pickle
 import pyfiglet
+import ast
 from datetime import datetime
 # Load Local Function Files:
 from fileHandler_helper_functions import *
@@ -27,7 +28,8 @@ def options_selector(options_list, message="\n", err_msg="\n"):
     for i, option in enumerate(options_list):
         print(f"{i} = {option}")
     try:
-        choice = int(input("Please Enter the ID of the desired Option: "))
+        choice = get_non_negative_int("Please Enter the ID of the desired Option: ")
+        #choice = int(input("Please Enter the ID of the desired Option: "))
         print(f"You have selected: {options_list[choice]}")
     except IndexError as ide:
         print(f"Error {ide} ")
@@ -168,7 +170,7 @@ def courier_operations_menu(couriers_list):
             print(f"New Courier Name: {new_courier_name}")
         new_courier_tel = get_min_length_string("Insert Courier Tel: ")
         new_courier_orders = []
-        new_courier = {"Name": new_courier_name, "Tel":new_courier_tel, "Orders": new_courier_orders}
+        new_courier = {"Name": new_courier_name, "Tel":new_courier_tel, "Orders": []}
         mutable_co.append(new_courier)
         print(mutable_co)
         couriers_list = commit_changes(couriers_list, mutable_co)
@@ -201,8 +203,8 @@ def courier_operations_menu(couriers_list):
                     couriers_list[courier_no][info_change_key] = new_var
             else:
                 print(f"Changes to {info_change_key} Cancelled")
-            more_changes = input("Is there anything else to amend on this order? (y/n): ")
-        print("\nReturning to order operations menu\n")
+            more_changes = input("Is there anything else to amend on this Courier? (y/n): ")
+        print("\nReturning to Courier Operations menu\n")
     elif usr_input == 4:
         # Option 4: Delete a Courier
         courier_no = options_selector(couriers_list, " Delete Existing Courier ".center(50, '~'))
@@ -231,6 +233,7 @@ def order_operations_menu(products_list, orders_list, couriers_list):
     order_keys_usr = ("Name", "Address", "Tel", "Items")
     order_keys_sys = ("Order_ID", "Status", "Time", "Courier")
     order_keys_all = ("Order_ID", "Name", "Address", "Tel", "Status", "Time", "Items", "Courier")
+    courier_keys = ("Name", "Tel", "Orders")
     submenu_options = ("exit()", "Print Orders Dictionary", "Create New Order", "Update Order Status", "Update Existing Order", "Delete Order")
     carryOn = True
     # Retrieve User Input to navigate submenu
@@ -242,11 +245,26 @@ def order_operations_menu(products_list, orders_list, couriers_list):
         with open(orders_list_file, 'wb') as handle:
             pickle.dump(orders_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
             carryOn = False # Set recursion in submenu to false
+        save_list_of_dicts_to_csv(couriers_list,"./data/couriers_list.csv")
         # main_options_menu()
     elif usr_input == 1:
         # Option 1: Print Orders Dictionary
         os.system('cls||clear')
         print_list_of_dicts(orders_list)
+        # Add option to Sort Dictionaries
+        usr_sort = get_min_length_string("\n Would you like to sort the Orders List? (y/n): ")
+        if usr_sort.lower() == "y":
+            order_by = options_selector(order_keys_all," Select Parameter to Sort by: ".center(50, " "))
+            key_to_sort_by = order_keys_all[order_by]
+            if key_to_sort_by in ("Courier", "Items"): 
+                list_of_subkeys = list(orders_list[0][key_to_sort_by].keys())
+                subkey = list_of_subkeys[options_selector(list_of_subkeys," Select Parameter to Sort by: ".center(50, " "))]
+                if subkey in ("Items"):
+                    print_list_of_dicts(sorted(orders_list, key = lambda x: x[key_to_sort_by][subkey][0]["Name"]))
+                else:
+                    print_list_of_dicts(sorted(orders_list, key = lambda x: x[key_to_sort_by][subkey]))
+            else:
+                print_list_of_dicts(sorted(orders_list, key=lambda x: x[key_to_sort_by]))
     elif usr_input == 2:
         # Option 2: Create a New Order
         print("Create New Order:")
@@ -267,7 +285,10 @@ def order_operations_menu(products_list, orders_list, couriers_list):
         print(order_uniq_id)
         dict_obj["Order_ID"] = order_uniq_id
         courier_pick = options_selector(couriers_list, f"Select a Courier for the order: {order_uniq_id}")
-        dict_obj["Courier"] = couriers_list[courier_pick]
+        # Upon Picking Courier, add Order_ID to the relevant Courier Dictionary
+        courier = couriers_list[courier_pick]
+        courier.get("Orders").append(order_uniq_id)
+        dict_obj["Courier"] = courier
         # Add dictionary object to orders_dict dictionary
         orders_list.append(dict_obj)
     elif usr_input == 3:
@@ -346,6 +367,9 @@ def products_list_operations_menu(products_list):
         cafe_header()
         print(" Food Menu ".center(50, '~'))
         print_list_of_dicts(products_list)
+        print("\n\n")
+        print(products_list)
+        print("\n\n")
     elif usr_input == 2:
         # Option 2: Create a New Product
         print(" Create a New Product ".center(50, '~'))
@@ -415,10 +439,20 @@ def main_options_menu():
             orders_list = pickle.load(handle)
         products_list = read_list_of_dicts_from_csv("./data/products_list.csv")
         couriers_list = read_list_of_dicts_from_csv("./data/couriers_list.csv")
+        # Due to a list being stored in the value of key: Orders inside couriers_list
+        # We need to execute an operation to convert each value upon read to enable list operations
+        # Will this break them? Maybe we convert when run?
+        for d in couriers_list:
+            d["Orders"] = ast.literal_eval(d["Orders"])
         order_operations_menu(products_list, orders_list, couriers_list)
     elif usr_input == 3:
         # Option 3: Couriers Operations Menu
         couriers_list = read_list_of_dicts_from_csv("./data/couriers_list.csv")
+        # Due to a list being stored in the value of key: Orders inside couriers_list
+        # We need to execute an operation to convert each value upon read to enable list operations
+        # Will this break them? Maybe we convert when run?
+        for d in couriers_list:
+            d["Orders"] = ast.literal_eval(d["Orders"])
         courier_operations_menu(couriers_list)
     else:
         # Input Invalid / Out of range

@@ -8,11 +8,21 @@ TTD Mini Project
 Actions:
 # Added a literal shallow copy of a product dictionary using <dict_obj>.copy()
 # ^^ enables use of commit_changes(original_object, new_object)
-
-
+# Completed Actions:
+16/11/22 - Print orders list sorted by courier &/or by order_status
+16/11/22 - Corrected options_selector error when input = -1 (negative list index printing not caught before Error Message)
+16/11/22 - Added Conversion of String Representation of List to List upon Loading of couriers_list["Orders"] from CSV using DictReader
+16/11/22 -  
 TTD NEW:
+15/11/22: INCOMPLETE
+- Function to add to a specific data type key in a dictionary?
 
-Add check if unique in list functionality to make_string_unique(obj, list_of_obj) function
-instead of doing the check before calling?
-Different function: search for key in list of dicts?
-Fucntion to add to a specific data type key in a dictionary?
+16/11/22: INCOMPLETE
+- On Order Creation, append order_ID to Courier Dictionary
+- Check the Order Update and Courier Updates don't invalidate one another - should we be able to mutate both sides?
+- Update the Order_ID when the Name on the order changes in both the courier dict and the order dict
+- Add Unit tests for file handling helper functions
+- Add Unit tests for decoration helper functions 
+- Add Unit tests for unique_str_helper_functions
+- Remove Shallow/Deep Copy operations which clutter code 
+- Fix messy order_by for printing orders_list. Can we do similar for the Products and Couriers Lists?

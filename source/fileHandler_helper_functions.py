@@ -16,6 +16,26 @@ def commit_changes(original, updated):
     else:
         return(original)
 
+
+def string_representation_of_list_to_list(list_as_string):
+    # Function to convert a string representation of a python list object
+    # Into a literal Python List
+    # This can occur using csv.Dictreader where the value of a key contains a list object
+    # Args:
+    # list_as_string = str, e.g. "[1,2,3,4,'alphabetsoup', 24.3798]"
+    # 1) Strip Square Brackets ton inspect inner string
+    inner_string = list_as_string.strip('][')
+    # 2) Check for any "," in string
+    if "," in inner_string:
+        # Multiple elements to split on
+        list_obj = inner_string.split(',')
+    else:
+        list_obj = inner_string.split()
+        # Just one to split on or none, remove white space
+    # We now need to convert the contents to a given type we know of, e.g. integer, string, float, object
+    return(list_obj)  
+
+
 def list_to_line_delim_txt(list_obj, filepath):
     # Function to save a list of strings to a line delimited text file
     # Args: 
@@ -77,4 +97,5 @@ def read_list_of_dicts_from_csv(filename):
         reader = csv.DictReader(f)
         list_of_dicts = [dict for dict in reader]
         return(list_of_dicts)
+
 
