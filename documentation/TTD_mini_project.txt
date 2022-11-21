@@ -13,6 +13,11 @@ Actions:
 16/11/22 - Corrected options_selector error when input = -1 (negative list index printing not caught before Error Message)
 16/11/22 - Added Conversion of String Representation of List to List upon Loading of couriers_list["Orders"] from CSV using DictReader
 17/11/22 - Added Detailed README.md file to the project
+18/11/22 - Fixed the build app errors with dockerised python linked to mysql db
+18/11/22 - Moved options_selector() out of main and into err_catching_helper_functions
+
+
+
 TTD NEW:
 15/11/22: INCOMPLETE
 - Function to add to a specific data type key in a dictionary?
@@ -26,8 +31,12 @@ TTD NEW:
 - Add Unit tests for unique_str_helper_functions
 - Remove Shallow/Deep Copy operations which clutter code 
 - Fix messy order_by for printing orders_list. Can we do similar for the Products and Couriers Lists?
-- Add a Readme File using md editor and push to repo
 
 17/11/22: INCOMPLETE
 - Code Commentary Cleanups
 - wk5: save/read to/from database table instead of CSV for Products and Couriers List
+- With 
+
+18/11/22: INCOMPLETE
+- Remove dependencies of pyfiglet from main script
+- Notes: Create a requirements.txt to pip install from for both Docker and in general

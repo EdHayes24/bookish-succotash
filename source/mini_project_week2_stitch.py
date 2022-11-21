@@ -138,7 +138,7 @@ def product_selector(option, items_list , dict_out, key_names = ("Items", "Quant
         print("Index not in range, aborting product_selector operation")
     return(dict_out)
 
-# # # Menu/Sub-menu Helper Functions:
+# # # Menu/Sub-menu Functions:
 def courier_operations_menu(couriers_list):
     # Function for the courier operations Options Menu
     # Prints welcome string and product operation options

@@ -46,3 +46,31 @@ def get_non_neg_float(prompt, dp=None):
         else:
             break
     return value
+
+# # # User Input Helper Functions:
+def options_selector(options_list, message="\n", err_msg="\n"):
+    # Function to ask user to choose an option from the printed list
+    # Args:
+    # options = list or tuple, list of options to choose from
+    # message = string, printed sub-menu header
+    # err_msg = string, informs user of correct input format based on prior error
+    print(message)
+    print(err_msg)
+    for i, option in enumerate(options_list):
+        print(f"{i} = {option}")
+    try:
+        choice = get_non_negative_int("Please Enter the ID of the desired Option: ")
+        #choice = int(input("Please Enter the ID of the desired Option: "))
+        print(f"You have selected: {options_list[choice]}")
+    except IndexError as ide:
+        print(f"Error {ide} ")
+        err_msg = f"*** Please enter an integer value within {range(len(options_list))}"
+        choice = options_selector(options_list, message, err_msg)
+        return(choice)
+    except Exception as e:
+        print(f"Error {e} ")
+        err_msg = "*** Please enter an integer corresponding to the desired options:"
+        choice = options_selector(options_list, message, err_msg)
+        return(choice)
+    else:
+        return(choice)
