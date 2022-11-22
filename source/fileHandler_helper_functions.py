@@ -1,4 +1,3 @@
-# FileHandler Operations Functions
 # fileHandler_helper_functions.py
 # Python File containing helper functions for open, read, write operations on files
 # For standard variable formats (lists, list of dictionaries etc..)
@@ -8,6 +7,7 @@ fileHandler_helper_functions.py
 """
 import csv
 from err_catching_helper_functions import get_min_length_string
+
 # # # File Handler Helper Functions:
 def commit_changes(original, updated):
     # Function to decide whether or not to commit to changes
@@ -19,9 +19,9 @@ def commit_changes(original, updated):
     # usr_input = input("Would you like to keep these changes? (y/n): ")
     choice = usr_input.lower()[0] == "y"
     if choice:
-        return(updated)
+        return updated
     else:
-        return(original)
+        return original
 
 
 def string_representation_of_list_to_list(list_as_string):
@@ -31,27 +31,27 @@ def string_representation_of_list_to_list(list_as_string):
     # Args:
     # list_as_string = str, e.g. "[1,2,3,4,'alphabetsoup', 24.3798]"
     # 1) Strip Square Brackets ton inspect inner string
-    inner_string = list_as_string.strip('][')
+    inner_string = list_as_string.strip("][")
     # 2) Check for any "," in string
     if "," in inner_string:
         # Multiple elements to split on
-        list_obj = inner_string.split(',')
+        list_obj = inner_string.split(",")
     else:
         list_obj = inner_string.split()
         # Just one to split on or none, remove white space
     # We now need to convert the contents to a given type we know of, e.g. integer, string, float, object
-    return(list_obj)  
+    return list_obj
 
 
 def list_to_line_delim_txt(list_obj, filepath):
     # Function to save a list of strings to a line delimited text file
-    # Args: 
+    # Args:
     # list_obj = list to convert to string and save
     # filepath = string, with path to text file accesible from os.getcwd()
     try:
-        with open(filepath, 'w+') as f:
+        with open(filepath, "w+") as f:
             list_obj = [str(item) for item in list_obj]
-            f.write('\n'.join(list_obj))
+            f.write("\n".join(list_obj))
     except FileNotFoundError as fnfe:
         print(f"Error in: list_to_line_delim_txt({filepath})")
         print(f"Error: {fnfe}")
@@ -65,21 +65,21 @@ def line_delim_txt_to_list(filepath):
     # Args: filepath = string with path to text file accesible from os.getcwd()
     # Returns: list of strings
     try:
-        with open(filepath, 'r') as f:
+        with open(filepath, "r") as f:
             out_list = []
             for line in f.readlines():
-                out_list.append(line.strip('\n'))
+                out_list.append(line.strip("\n"))
     except FileNotFoundError as fnfe:
         print(f"Error in: line_delim_txt_to_list({filepath})")
         print(f"Error Type: {fnfe}")
-        print("Returning None Object")       
+        print("Returning None Object")
     except Exception as e:
         print(f"Error in: line_delim_txt_to_list({filepath})")
         print(f"Error Type: {e}")
         print("Returning None Object")
-        return(None)
+        return None
     else:
-        return(out_list)
+        return out_list
 
 
 def save_list_of_dicts_to_csv(list_of_dicts, filepath):
@@ -89,7 +89,7 @@ def save_list_of_dicts_to_csv(list_of_dicts, filepath):
     # list_of_dicts = list of dictionaries, all keys must be the same
     # filepath = str, full name of file.csv to be saved
     keys = list_of_dicts[0].keys()
-    with open(filepath, 'w+', newline='') as f:
+    with open(filepath, "w+", newline="") as f:
         dict_writer = csv.DictWriter(f, keys)
         dict_writer.writeheader()
         dict_writer.writerows(list_of_dicts)
@@ -100,9 +100,7 @@ def read_list_of_dicts_from_csv(filename):
     # Assumed all dictionaries in list to have identical keys and orders
     # Args:
     # filename = string, full path to csv file
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         reader = csv.DictReader(f)
         list_of_dicts = [dict for dict in reader]
-        return(list_of_dicts)
-
-
+        return list_of_dicts

@@ -23,6 +23,9 @@ Actions:
 22/11/22 - Function for create MySQL Table
 22/11/22 - Function for get col names from MySQL Table
 22/11/22 - Function for get col data types from MySQL Table
+22/11/22 - Upon deletion of order object, courier list of associated orders now updated
+22/11/22 - Reformatted files and spacing for readability
+22/11/22 -  
 
 
 
@@ -51,4 +54,12 @@ TTD NEW:
 
 22/11/22: INCOMPLETE
 - Create functions for common SQL tasks
-- 
+-* Orders List Table printed is unreadable due to length of fields - reformat the data fields associated with product selector functions
+    # e.g. tuples or dict for order_dict
+    # order_dict["Items"] = {"selection": ["chocolate", "chicken", "slumpie"], "count": [3, 2, 1]}
+    # order_dict["Items"] = [("chocolate", 3), ("chicken", 2), ("slumpie", 1)]
+- Add a total price calculation field for each order to update on changes to quantity/product
+- prevent 0 quantity being entered for products in product_selector functions
+- functionalise order_list sort feature after fixing action '-*' from above (nested dicts to sort by dtype before other things)
+- minimum information relationship similar to MySQL Table? (E.g. order + courier only have ID as foreign keys in each others tables)
+- Update Time field to include  hh:mm - will facilitate time since ordered etc... in future

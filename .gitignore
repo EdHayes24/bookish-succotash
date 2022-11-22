@@ -9,3 +9,5 @@ source/__pycache__/decoration_helper_functions.cpython-39.pyc
 source/__pycache__/err_catching_helper_functions.cpython-39.pyc
 source/__pycache__/fileHandler_helper_functions.cpython-39.pyc
 source/__pycache__/unique_str_helper_functions.cpython-39.pyc
+source/dummy_area.py
+source/branch_test.txt

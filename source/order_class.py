@@ -1,15 +1,20 @@
 # OOP Version types
-from err_catching_helper_functions import get_min_length_string, get_non_neg_float, get_non_negative_int
+from err_catching_helper_functions import (
+    get_min_length_string,
+    get_non_neg_float,
+    get_non_negative_int,
+)
+
 
 class Order:
-    id=''
-    name=''
-    address=''
-    tel=''
-    status=''
-    time=''
-    items=[]
-    courier=''
+    id = ""
+    name = ""
+    address = ""
+    tel = ""
+    status = ""
+    time = ""
+    items = []
+    courier = ""
 
     def order_creation(self):
         self.id = "001"
@@ -22,15 +27,20 @@ class Order:
         pass
 
     def update_status(self):
-        status_options = ("Preparing", "Awaiting-Delivery", "Out-for-Delivery", "Delivered")
+        status_options = (
+            "Preparing",
+            "Awaiting-Delivery",
+            "Out-for-Delivery",
+            "Delivered",
+        )
         pass
-        # new_status = options_selector(status_options, "Enter a New Order Status: ")    
+        # new_status = options_selector(status_options, "Enter a New Order Status: ")
+
     def order_create(self):
         self.id = 123
-        self.time ="now"
+        self.time = "now"
         self.name = input("Enter Name: ")
         print(vars(self))
-
 
 
 if __name__ == "__main__":

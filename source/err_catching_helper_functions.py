@@ -9,7 +9,9 @@ def get_non_negative_int(prompt):
         try:
             value = input(prompt)
             if "." in value:
-                raise ValueError("Error: . character detected, Floats not permitted. Please enter an integer value")
+                raise ValueError(
+                    "Error: . character detected, Floats not permitted. Please enter an integer value"
+                )
             value = int(value)
         except ValueError as ve:
             print(f"Error: {ve}\n Please enter a positive integer value")
@@ -22,14 +24,17 @@ def get_non_negative_int(prompt):
             break
     return value
 
-def get_min_length_string(prompt, length_min=1, length_max = 255):
+
+def get_min_length_string(prompt, length_min=1, length_max=255):
     while True:
         s = input(prompt)
         if len(s) < length_min:
             print(f"***Please enter a String with length greater than {length_min} :")
             continue
         elif len(s) > length_max:
-            print(f"***Please enter a String with length in range: {length_min} < s < {length_max} :")
+            print(
+                f"***Please enter a String with length in range: {length_min} < s < {length_max} :"
+            )
             continue
         else:
             break
@@ -37,7 +42,7 @@ def get_min_length_string(prompt, length_min=1, length_max = 255):
 
 
 # Input Error Catching Functions
-def get_non_neg_float(prompt, dp=None):
+def get_non_neg_float(prompt):
     while True:
         try:
             value = float(input(prompt))
@@ -52,8 +57,11 @@ def get_non_neg_float(prompt, dp=None):
             break
     return value
 
+
 # # # User Input Helper Functions:
 def options_selector(options_list, message="\n", err_msg="\n"):
+    '''Prints options_list and assigns indices + requests user input to select option.\n
+    Recursively executes until valid input recieved with updated err_msg. \nReturns usr input index.'''
     # Function to ask user to choose an option from the printed list
     # Args:
     # options = list or tuple, list of options to choose from
@@ -65,17 +73,17 @@ def options_selector(options_list, message="\n", err_msg="\n"):
         print(f"{i} = {option}")
     try:
         choice = get_non_negative_int("Please Enter the ID of the desired Option: ")
-        #choice = int(input("Please Enter the ID of the desired Option: "))
+        # choice = int(input("Please Enter the ID of the desired Option: "))
         print(f"You have selected: {options_list[choice]}")
     except IndexError as ide:
         print(f"Error {ide} ")
         err_msg = f"*** Please enter an integer value within {range(len(options_list))}"
         choice = options_selector(options_list, message, err_msg)
-        return(choice)
+        return choice
     except Exception as e:
         print(f"Error {e} ")
         err_msg = "*** Please enter an integer corresponding to the desired options:"
         choice = options_selector(options_list, message, err_msg)
-        return(choice)
+        return choice
     else:
-        return(choice)
+        return choice

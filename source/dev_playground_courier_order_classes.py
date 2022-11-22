@@ -6,7 +6,7 @@ class Courier_object:
         self.orders = orders
         self.order_statuses = order_statuses
         self.n_orders = n_orders
-    
+
 
 class Order:
     def __init__(self, order_id, name, address, tel, items, courier, status):
@@ -22,7 +22,7 @@ class Order:
 def calc_courier_busy_score(order_statuses, penalty_dict):
     # Function to calculate how busy a courier is
     # based on a penalty score defined by the penaly_dict
-    # and the order statuses 
+    # and the order statuses
     # Args:
     # statuses = list of strings, statuses - must be a valid key of penalty_dict
     # penalty_dict = dict, associates string:score
@@ -37,34 +37,76 @@ def calc_courier_busy_score(order_statuses, penalty_dict):
         print("order_statuses contains a value which doesn't exist in penalty_dict")
         print("Aborting calculation")
     courier_score = sum([penalty_dict[status] for status in order_statuses])
-    return courier_score 
+    return courier_score
 
 
 # Make a dictionary of penalty scores for the delivery status
-order_status_options = ("preparing", "awaitng-delivery", "out-for-delivery", "delivered")
-courier_score = (1,2,3,0)
+order_status_options = (
+    "preparing",
+    "awaitng-delivery",
+    "out-for-delivery",
+    "delivered",
+)
+courier_score = (1, 2, 3, 0)
 p_scores = {}
 for key, value in zip(order_status_options, courier_score):
     p_scores[key] = value
 # For a courier, get a list of their orders and their statuses:
-couriers_order_statuses = ["preparing", "awaitng-delivery", "out-for-delivery", "delivered"]
+couriers_order_statuses = [
+    "preparing",
+    "awaitng-delivery",
+    "out-for-delivery",
+    "delivered",
+]
 courier_score = sum([p_scores[status] for status in couriers_order_statuses])
 print(courier_score)
 
 # Lets test object updating:
 courier_1 = Courier_object("Delivery Dan", [], [], 0)
-order_1 = Order("Dave_2022_11_10", "Dave", "Here", "01204123123", {"Items":["anthrax", "chicken"], "Quantity": [1,2]}, courier_1, order_status_options[0])
+order_1 = Order(
+    "Dave_2022_11_10",
+    "Dave",
+    "Here",
+    "01204123123",
+    {"Items": ["anthrax", "chicken"], "Quantity": [1, 2]},
+    courier_1,
+    order_status_options[0],
+)
 # Let's change the courier score to be +3
 courier_1.n_orders = 1
-print(order_1.courier.n_orders) # It has been updated!
+print(order_1.courier.n_orders)  # It has been updated!
 
 if __name__ == "frogs":
     # Create an Order
     courier_1 = Courier_object("Delivery Dan", [], [], 0)
     courier_2 = Courier_object("Delivery Danielle", [], [], 0)
-    order_1 = Order("Dave_2022_11_10", "Dave", "Here", "01204123123", {"Items":["anthrax", "chicken"], "Quantity": [1,2]}, courier_1, order_status_options[0])
-    order_2 = Order("Jim_2022_11_10", "Jim", "There", "123456", {"Items":["chocolate", "chicken"], "Quantity": [4,5]}, courier_1, order_status_options[0])
-    order_3 = Order("Tom_2022_11_10", "Tom", "Someplace", "654321", {"Items":["lollipop", "chicken"], "Quantity": [3,4]}, courier_2, order_status_options[1])
+    order_1 = Order(
+        "Dave_2022_11_10",
+        "Dave",
+        "Here",
+        "01204123123",
+        {"Items": ["anthrax", "chicken"], "Quantity": [1, 2]},
+        courier_1,
+        order_status_options[0],
+    )
+    order_2 = Order(
+        "Jim_2022_11_10",
+        "Jim",
+        "There",
+        "123456",
+        {"Items": ["chocolate", "chicken"], "Quantity": [4, 5]},
+        courier_1,
+        order_status_options[0],
+    )
+    order_3 = Order(
+        "Tom_2022_11_10",
+        "Tom",
+        "Someplace",
+        "654321",
+        {"Items": ["lollipop", "chicken"], "Quantity": [3, 4]},
+        courier_2,
+        order_status_options[1],
+    )
     courier_1 = Courier_object("Delivery Dan", [order_1], [], 0)
     courier_2 = Courier_object("Delivery Danielle", [order_2, order_3], [], 0)
     # Orders list:
