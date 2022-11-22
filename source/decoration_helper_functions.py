@@ -1,3 +1,8 @@
+# decoration_helper_functions.py
+# Python File containing helper functions for decoration and print operations
+"""
+decoration_helper_functions.py
+"""
 # Decoration and Print Operations Helper Functions
 import os
 import pyfiglet

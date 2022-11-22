@@ -1,4 +1,11 @@
 # FileHandler Operations Functions
+# fileHandler_helper_functions.py
+# Python File containing helper functions for open, read, write operations on files
+# For standard variable formats (lists, list of dictionaries etc..)
+# And standard data formats (.txt, .csv etc..)
+"""
+fileHandler_helper_functions.py
+"""
 import csv
 from err_catching_helper_functions import get_min_length_string
 # # # File Handler Helper Functions:

@@ -1,3 +1,8 @@
+# err_catching_helper_functions.py
+# Python File containing helper functions for standardised recursive error catching functions for user input
+"""
+err_catching_helper_functions.py
+"""
 # Input Error Catching Functions
 def get_non_negative_int(prompt):
     while True:

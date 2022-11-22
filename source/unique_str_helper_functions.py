@@ -1,11 +1,18 @@
+# unique_str_helper_functions.py
+# Python File containing helper functions for modification of string
+# to make string unique compared to remainder of list
+"""
+unique_str_helper_functions.py
+"""
+
 # # # Unique String Helper Functions:
 
-def make_string_unique(s, list_s):
+def make_string_unique(s: str, list_s: list):
     # Function to convert an input string into a unique one
     # Performed by adding _ and max 3 padded 0's w/ iterative counter {num}
     # At 999 iterations exits and states not found
     # Args:
-    # s = string(), word to be made unique
+    # s = string, word to be made unique
     # s_list = list of strings, list of strings to be unique from
     num = 1
     s = str(s)
