@@ -19,7 +19,7 @@ def print_list_of_dicts(list_of_dicts):
         headers = list_of_dicts[0].keys()
         rows = [dict_obj.values() for dict_obj in list_of_dicts]
         row_ids = [f"id = {id}" for id in range(len(rows))]
-        print(tabulate.tabulate(rows, headers, showindex=row_ids))
+        print(tabulate.tabulate(rows, headers, showindex=row_ids, tablefmt="plain"))
     except IndexError as ide:
         print(f"Error: {ide}")
         print(f"Empty List argument in print_list_of_dicts(list_of_dicts)")

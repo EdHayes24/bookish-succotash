@@ -5,3 +5,7 @@ lod_v2.csv
 source/__pycache__/
 dummy_products.csv
 dummy_products2.csv
+source/__pycache__/decoration_helper_functions.cpython-39.pyc
+source/__pycache__/err_catching_helper_functions.cpython-39.pyc
+source/__pycache__/fileHandler_helper_functions.cpython-39.pyc
+source/__pycache__/unique_str_helper_functions.cpython-39.pyc

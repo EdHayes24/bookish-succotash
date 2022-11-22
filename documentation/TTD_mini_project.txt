@@ -15,6 +15,14 @@ Actions:
 17/11/22 - Added Detailed README.md file to the project
 18/11/22 - Fixed the build app errors with dockerised python linked to mysql db
 18/11/22 - Moved options_selector() out of main and into err_catching_helper_functions
+21/11/22 - Renamed Docker containers using .env and YAML files
+21/11/22 - Added formatting option to print_list_of_dicts()
+21/11/22 - Populated tables with dummy values of correct format
+22/11/22 - Functions to format a list into a string sutiable for SQL Column name and Value commands
+22/11/22 - Function for insert rows to MySQL Table
+22/11/22 - Function for create MySQL Table
+22/11/22 - Function for get col names from MySQL Table
+22/11/22 - Function for get col data types from MySQL Table
 
 
 
@@ -40,3 +48,7 @@ TTD NEW:
 18/11/22: INCOMPLETE
 - Remove dependencies of pyfiglet from main script
 - Notes: Create a requirements.txt to pip install from for both Docker and in general
+
+22/11/22: INCOMPLETE
+- Create functions for common SQL tasks
+- 
