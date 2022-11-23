@@ -41,9 +41,9 @@ Each menu function is supported by an array of helper functions as tabulated bel
 In addition to the bonus features, additional features including:
 - Permits Customer to add items and their quantities to an Order
 - Sort printed Orders by any attribute
-- Orders Contain Time of order attribute and Unique Identifier Strings for eventual database storage
+- Orders Contain DateTime of order attribute and Unique Identifier Strings for eventual database storage, (the second of which has become pointless for week5 data tables but nevermind)
 - Product, Courier and Order attribute fields checked for duplicate naming on addition/updating
-- Enforced recursion with try exception to only accept valid entries (e.g. integer within range, minimum n characters for name/address etc..)
+- Enforced recursion with try exception to only accept valid entries (e.g. integer within range, minimum n characters for name/address etc..)**this is also a problem...
 - Pyfiglet decoration strings in menu headers
 - Tuples used to store expected dictionary keys, menu options and more to help prevent abuse by mutation.
 ## Bugs and Room for Improvement
@@ -52,7 +52,7 @@ While these features have been successful, there are some things which could be 
 2. To improve performance, a decision was taken to mutate Product/Order/Courier data structures inside each sub-menu, only saving the changes to the file when the relevant operation had succeeded and the user selected to exit the current menu. Files are loaded once just prior to entry to the sub-menu. This means that if an error/crash were to occur in the sub-menu, the most recent change AND any previous changes made to the data structure wouldn't be saved, invalidating ACID transactions. 
 3. Files are currently completely overwritten on save operations using the w+ command, this is likely bad practice w.r.t the ACID transactions discussed prior.
 4. SOLID + FP upon embarking on the constantly changing needs of the client, functional programming for many different menu functions could become untenable with each data structure having slightly different requirements. A more SOLID and easily maintained approach may be achieved using OOP but this would also require a large amount of refactoring. The large functional dependencies also inhibits ease of testing. A lesson has been learned in the maintenance cost of programming
-5. Functions betray single responsibility protocols in many areas of the programme making it difficult to test. In other cases, self contained recursion in functions (e.g. those in err_handling_helper_functions.py) make program breaking errors if conditions are not met. It would be better to deal with input recursion errors outside of the functions themselves to avoid these breaking errors. This is further evidenced by repeated return + function calls in try-except blocks inside a function. A better example and approach has been implemented in the product_selector suite of functions w.r.t single responsibility and the database table operations currently under development. It is also clear in some menu functions where complicated hard coded solutions exist.
+5. Functions betray single responsibility protocols in many areas of the program making it difficult to test. In other cases, self contained recursion in functions (e.g. those in err_handling_helper_functions.py**) make program breaking errors if conditions are not met. It would be better to deal with input recursion errors outside of the functions themselves to avoid these breaking errors which have to be bodged around. This is further evidenced by repeated return and function calls in try-except blocks inside a function. A better example and approach has been implemented in the product_selector suite of functions w.r.t single responsibility and the database table operations currently under development. It is also clear in some menu functions where complicated hard coded solutions exist.
 
 
 Additional Bugs to be resolved include:

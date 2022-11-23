@@ -4,7 +4,11 @@
 err_catching_helper_functions.py
 """
 # Input Error Catching Functions
-def get_non_negative_int(prompt):
+def get_non_negative_int(prompt: str):
+    '''
+    Retrieve user input of type integer > 0 based on string prompt.\n
+    While loop used to recursively get new entry if the input doesn't meet the type requirements.
+    '''
     while True:
         try:
             value = input(prompt)
@@ -26,6 +30,10 @@ def get_non_negative_int(prompt):
 
 
 def get_min_length_string(prompt, length_min=1, length_max=255):
+    '''
+    Retrieve user input string length > 0 based on string prompt.\n
+    While loop used to recursively get new entry if the input doesn't meet the type requirements.
+    '''
     while True:
         s = input(prompt)
         if len(s) < length_min:
@@ -43,6 +51,10 @@ def get_min_length_string(prompt, length_min=1, length_max=255):
 
 # Input Error Catching Functions
 def get_non_neg_float(prompt):
+    '''
+    Retrieve user input of type float > 0 based on string prompt.\n
+    While loop used to recursively get new entry if the input doesn't meet the type requirements.
+    '''
     while True:
         try:
             value = float(input(prompt))

@@ -10,6 +10,10 @@ from err_catching_helper_functions import get_min_length_string
 
 # # # File Handler Helper Functions:
 def commit_changes(original, updated):
+    '''
+    Function to request which argument to return (original/updated) \n
+    Used to implement rollbacks for mutated shallow and deep copied variables
+    '''
     # Function to decide whether or not to commit to changes
     # original = unedited value
     # updated = altered value
@@ -24,7 +28,13 @@ def commit_changes(original, updated):
         return original
 
 
-def string_representation_of_list_to_list(list_as_string):
+def string_representation_of_list_to_list(list_as_string: str):
+    '''
+    Converts a string representation of a list ("[1,2,3,4]") into a python list object\n
+    i.e. "[1,2,3,4]" -> ["1","2","3","4"]\n
+    Developed due to csv.DictRead() generating string representation of list when reading\n
+    dictionary value of list from a csv.
+    '''
     # Function to convert a string representation of a python list object
     # Into a literal Python List
     # This can occur using csv.Dictreader where the value of a key contains a list object
@@ -43,7 +53,11 @@ def string_representation_of_list_to_list(list_as_string):
     return list_obj
 
 
-def list_to_line_delim_txt(list_obj, filepath):
+def list_to_line_delim_txt(list_obj:list, filepath:str):
+    '''
+    Saves List object to line delimited text file - overwrites all file contents (w+)\n
+    FileNotFoundErrors result in non-execution
+    '''
     # Function to save a list of strings to a line delimited text file
     # Args:
     # list_obj = list to convert to string and save
@@ -60,7 +74,11 @@ def list_to_line_delim_txt(list_obj, filepath):
         print(f"Error: {e}")
 
 
-def line_delim_txt_to_list(filepath):
+def line_delim_txt_to_list(filepath: str):
+    '''
+    Reads line delimited text file to list object.\n
+    Returns None for FileNotFoundError
+    '''
     # Function to unpack a line delimited text file to a list of strings
     # Args: filepath = string with path to text file accesible from os.getcwd()
     # Returns: list of strings
@@ -82,7 +100,11 @@ def line_delim_txt_to_list(filepath):
         return out_list
 
 
-def save_list_of_dicts_to_csv(list_of_dicts, filepath):
+def save_list_of_dicts_to_csv(list_of_dicts: list, filepath: str):
+    '''
+    Saves List of dictionaries object to line delimited csv file with headers - overwrites all file contents (w+)\n
+    Each Dictionary must have identical keys in the list
+    '''
     # Function to save a list of Dictionaries to a csv
     # Requires all dictionaries in list to have identical keys and orders
     # Args:
@@ -95,7 +117,11 @@ def save_list_of_dicts_to_csv(list_of_dicts, filepath):
         dict_writer.writerows(list_of_dicts)
 
 
-def read_list_of_dicts_from_csv(filename):
+def read_list_of_dicts_from_csv(filename: str):
+    '''
+    Reads line delimited csv file to list of dictionaries object.\n
+    ** if a dict value contains a list object, this will read function return a string representation of the list
+    '''
     # Function to read a list of Dictionaries from a csv
     # Assumed all dictionaries in list to have identical keys and orders
     # Args:

@@ -10,6 +10,9 @@ import tabulate
 
 
 def cafe_header():
+    '''
+    Prints Welcome String for Cafe upon entry into menus and sub-menus 
+    '''
     # Function to print presentation string
     # at top of menu calls
     os.system("cls||clear")
@@ -18,7 +21,10 @@ def cafe_header():
     print(" Dave's Cafe ".center(50, "~"))
 
 
-def print_list_of_dicts(list_of_dicts):
+def print_list_of_dicts(list_of_dicts: list):
+    '''
+    Prints list of dictionaries (with identical keys) to a formatted table using tabulate package
+    '''
     # requires tabulate: https://pypi.org/project/tabulate/
     # Prints formatted table from list of dictonary objects using tabulate package
     # Args: list_of_dicts = list of dictionaries
@@ -30,4 +36,3 @@ def print_list_of_dicts(list_of_dicts):
     except IndexError as ide:
         print(f"Error: {ide}")
         print(f"Empty List argument in print_list_of_dicts(list_of_dicts)")
-    pass

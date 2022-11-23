@@ -8,6 +8,9 @@ from err_catching_helper_functions import options_selector, get_non_negative_int
 
 
 def products_list_add(products_list, item):
+    '''
+    Appends item to list only if the item isn't in the list already
+    '''
     # Function to add an item to update/add an item to the products list
     # Args:
     # products_list = list of strings, current products_list to be updated
@@ -20,7 +23,12 @@ def products_list_add(products_list, item):
     return products_list
 
 
-def product_selector_add(items_list, out_dict, key_names=("Items", "Quantity")):
+def product_selector_add(items_list:list, out_dict:dict, key_names=("Items", "Quantity")):
+    '''
+    Recursively gets user input for product to add to an order dictionary until user chooses to stop.\n
+    If product already in order, increments quantity instead.
+    Returns updated order dictionary
+    '''
     # Function to obtain user input for order choice
     carryOn = True
     while carryOn:
@@ -49,6 +57,11 @@ def product_selector_add(items_list, out_dict, key_names=("Items", "Quantity")):
 
 
 def product_selector_remove(out_dict, key_names=("Items", "Quantity")):
+    '''
+    Recursively gets user input for product to remove to an order dictionary until user chooses to stop.\n
+    If the order dictionary is empty, returns the last modified version before attempting a removal. 
+    Returns updated order dictionary
+    '''
     # Function to obtain user input for order item removal
     carryOn = True
     while carryOn:
@@ -72,6 +85,10 @@ def product_selector_remove(out_dict, key_names=("Items", "Quantity")):
 
 
 def product_selector_amend(out_dict, key_names=("Items", "Quantity")):
+    '''
+    Recursively gets user input for product to amend and new quantity to update order dictionary until user chooses to stop.\n
+    Returns updated order dictionary
+    '''
     # Function to obtain user input for order item quantity amendment choice
     carryOn = True
     while carryOn:
@@ -89,7 +106,12 @@ def product_selector_amend(out_dict, key_names=("Items", "Quantity")):
     return out_dict
 
 
-def product_selector(option, items_list, dict_out, key_names=("Items", "Quantity")):
+def product_selector(option:int, items_list, dict_out, key_names=("Items", "Quantity")):
+    '''
+    Product Selection Operations Mini Menu for alterations to items on an order dictionary\n
+    Returns unaltered order dictionary for option out of range\n
+    Returns updated order dictionary based on optional function.
+    '''
     if option == 0:
         # Cancel, abort operation
         print("Abort Product Select Operation Menu")
