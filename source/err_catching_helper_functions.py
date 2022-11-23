@@ -99,3 +99,34 @@ def options_selector(options_list, message="\n", err_msg="\n"):
         return choice
     else:
         return choice
+
+
+def options_selector_v2(options_list, message="\n", err_msg="\n"):
+    '''REFACTORING: Prints options_list and assigns indices + requests user input to select option.\n
+    Recursively executes until valid input recieved with updated err_msg. \nReturns usr input index.'''
+    # Test that options_list is an iterable
+    try:
+        test_iterator = iter(options_list)
+    except TypeError as te:
+        print(f"Error: {te}")
+        print(options_list, 'is not iterable')
+    else:
+        # Check that iterable has length > 0 before continuing
+        if len(options_list) > 0:
+            while True:
+                print(message)
+                print(err_msg)
+                for i, option in enumerate(options_list):
+                    print(f"{i} = {option}")
+                try:
+                    choice = get_non_negative_int("Please Enter the ID of the desired Option: ")
+                    print(f"You have selected: {options_list[choice]}")
+                except IndexError as ide:
+                    print(f"Error: {ide}")
+                    err_msg = f"Please enter an integer value within {range(len(options_list))}"
+                else:
+                    break
+            return(choice)
+        else:
+            print(f"iterable {options_list} has length <= 0 - no options to choose from")
+            print("Aborting options_selector operation")
